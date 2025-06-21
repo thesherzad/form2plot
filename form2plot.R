@@ -1,28 +1,6 @@
 # Purpose: Get request, pull source dataset, generate R code (using AI), call
 # tool (using AI) to plot it. Follow template and formats
 
-get_form_rows <- function(form){
-  form_cols <- length(form)
-  # form_rows <- nrow(form)
-  form_nms <- names(form)
-  
-  chat <- purrr::map_chr(1:form_cols, function(col){
-    glue::glue(form_nms[col], ": ", unlist(form[1, form_nms[col]]), "\n")
-  }) |> invisible()
-  
-  glue::glue_collapse(chat, sep = "\n")
-}
-
-form_to_chat <- function(form){
-  stopifnot(is.data.frame(form))
-  stopifnot(nrow(form) > 0)
-  
-  form_row <- purrr::map_chr(1:nrow(form), function(r){
-    get_form_rows(form |> dplyr::slice(r))
-  }) |> invisible()
-  
-  glue::glue_collapse(form_row, sep = "\n\n")
-}
 
 # save the source data temporarily for querying
 # save_to_duckdb <- function(conn, df, df_nm){
